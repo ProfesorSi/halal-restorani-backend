@@ -1,6 +1,13 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+// const dbConfig = require("../config/db.config.js");
+
+const dbConfig = require("./config/db.config.js");
+
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 
 const app = express();
@@ -11,7 +18,7 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
@@ -26,11 +33,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const db = require("./models");
 const Role = db.role;
-
+const uri = dbConfig.getAtlasURI();
 db.mongoose
-  .connect(db.url, {
+  .connect(uri, {
+    useUnifiedTopology: true,
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useCreateIndex: true
+
   })
   .then(() => {
     console.log("Connected to the database!");
@@ -42,41 +51,41 @@ db.mongoose
   });
 
 
-  function initial() {
-    Role.estimatedDocumentCount((err, count) => {
-      if (!err && count === 0) {
-        new Role({
-          name: "user"
-        }).save(err => {
-          if (err) {
-            console.log("error", err);
-          }
-  
-          console.log("added 'user' to roles collection");
-        });
-  
-        new Role({
-          name: "moderator"
-        }).save(err => {
-          if (err) {
-            console.log("error", err);
-          }
-  
-          console.log("added 'moderator' to roles collection");
-        });
-  
-        new Role({
-          name: "admin"
-        }).save(err => {
-          if (err) {
-            console.log("error", err);
-          }
-  
-          console.log("added 'admin' to roles collection");
-        });
-      }
-    });
-  }
+function initial() {
+  Role.estimatedDocumentCount((err, count) => {
+    if (!err && count === 0) {
+      new Role({
+        name: "user"
+      }).save(err => {
+        if (err) {
+          console.log("error", err);
+        }
+
+        console.log("added 'user' to roles collection");
+      });
+
+      new Role({
+        name: "moderator"
+      }).save(err => {
+        if (err) {
+          console.log("error", err);
+        }
+
+        console.log("added 'moderator' to roles collection");
+      });
+
+      new Role({
+        name: "admin"
+      }).save(err => {
+        if (err) {
+          console.log("error", err);
+        }
+
+        console.log("added 'admin' to roles collection");
+      });
+    }
+  });
+}
 
 app.get("/", (req, res) => {
   res.send({
@@ -94,4 +103,5 @@ require("./routes/user.routes")(app);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
+
 });

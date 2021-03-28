@@ -1,3 +1,7 @@
-module.exports = {
-    url: "mongodb+srv://edis:Nejra123*@cluster0.ilv1y.mongodb.net/restorani?retryWrites=true&w=majority"
-};
+exports.getAtlasURI = () => {
+    let cluster = process.env.MONGODB_ATLAS_CLUSTER,
+        user = process.env.MONGODB_ATLAS_USER,
+        password = process.env.MONGODB_ATLAS_PASSWORD;
+
+        return (`mongodb+srv://${user}:${password}@${cluster}/restorani?retryWrites=true&w=majority`)
+}
