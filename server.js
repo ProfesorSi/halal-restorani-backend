@@ -33,7 +33,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const db = require("./models");
 const Role = db.role;
-const uri = dbConfig.getDBURI();
+const uri = dbConfig.URI
+
 db.mongoose
   .connect(uri, {
     useUnifiedTopology: true,
