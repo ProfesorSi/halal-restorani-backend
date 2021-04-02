@@ -6,7 +6,6 @@ mongoose.Promise = global.Promise;
 
 const db = {};
 db.mongoose = mongoose;
-// db.url = dbConfig.getAtlasURI;
 db.restorani = require("./restoran.model.js")(mongoose);
 
 
