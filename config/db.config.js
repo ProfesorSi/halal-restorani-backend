@@ -1,1 +1,1 @@
-exports.URI = `${process.env.MONGODB_URL}/restorani?retryWrites=true&w=majority`
+exports.URI = `${process.env.MONGO_URL}/restorani?retryWrites=true&w=majority`
