@@ -1,7 +1,4 @@
-exports.getAtlasURI = () => {
-    let cluster = process.env.MONGODB_ATLAS_CLUSTER,
-        user = process.env.MONGODB_ATLAS_USER,
-        password = process.env.MONGODB_ATLAS_PASSWORD;
-
-        return (`mongodb+srv://${user}:${password}@${cluster}/restorani?retryWrites=true&w=majority`)
+exports.getDBURI = () => {
+    let url = process.env.MONGODB_URL,
+        return (`${url}/restorani?retryWrites=true&w=majority`)
 }
